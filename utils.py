@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 def load_operations(file):
     '''считывает json файл
@@ -19,7 +20,7 @@ def sort_operations_by_date(operations):
         if operation:
             valid_operations.append(operation)
 
-    sorted_by_date = sorted(valid_operations, key=lambda k:'date', reverse=True)
+    sorted_by_date = sorted(valid_operations, key=lambda k: k['date'], reverse=True)
     return sorted_by_date
 
 def filter_operations_by_status(sorted_date, quantity):
@@ -35,12 +36,10 @@ def filter_operations_by_status(sorted_date, quantity):
                 break
     return executed_operations
 
-def convert_date(date):
+def convert_date(executed_operation):
     '''преобразует формат даты до ДД.ММ.ГГГГ
     возвращает строку'''
-    date1 = date[0:10]
-    date1_lst = date1.split('-')
-    convert_date = '.'.join(reversed(date1_lst))
+    convert_date = datetime.strptime(executed_operation["date"], "%Y-%m-%dT%H:%M:%S.%f").strftime("%d.%m.%Y")
 
     return convert_date
 
@@ -63,7 +62,7 @@ def mask_requisites(requisites):
 def format_operation_output(executed_operation):
     '''подго авливает данные из словаря для печати
     возвращает f-строку'''
-    str1 = f"{convert_date(executed_operation['date'])} {executed_operation['description']}"
+    str1 = f"{convert_date(executed_operation)} {executed_operation['description']}"
     if executed_operation.get('from'):
         str2 = f"{mask_requisites(executed_operation['from'])} '->' {mask_requisites(executed_operation['to'])}"
 
