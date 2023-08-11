@@ -39,7 +39,7 @@ def filter_operations_by_status(sorted_date, quantity):
 def convert_date(executed_operation):
     '''преобразует формат даты до ДД.ММ.ГГГГ
     возвращает строку'''
-    convert_date = datetime.strptime(executed_operation["date"], "%Y-%m-%dT%H:%M:%S.%f").strftime("%d.%m.%Y")
+    convert_date = datetime.strptime(executed_operation, "%Y-%m-%dT%H:%M:%S.%f").strftime("%d.%m.%Y")
 
     return convert_date
 
@@ -60,9 +60,9 @@ def mask_requisites(requisites):
 
 
 def format_operation_output(executed_operation):
-    '''подго авливает данные из словаря для печати
+    '''подготавливает данные из словаря для печати
     возвращает f-строку'''
-    str1 = f"{convert_date(executed_operation)} {executed_operation['description']}"
+    str1 = f"{convert_date(executed_operation['date'])} {executed_operation['description']}"
     if executed_operation.get('from'):
         str2 = f"{mask_requisites(executed_operation['from'])} '->' {mask_requisites(executed_operation['to'])}"
 
